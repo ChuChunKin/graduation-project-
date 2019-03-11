@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<title>首页</title>
+		<script src="js/mui.min.js"></script>
+		<link href="css/mui.min.css" rel="stylesheet" />
+		<style>
+			html,
+			body {
+				background-color: #efeff4;
+			}
+			
+			.title {
+				margin: 20px 15px 10px;
+				color: #6d6d72;
+				font-size: 15px;
+				padding-bottom: 51px;
+			}
+		</style>
+	</head>
+
+	<body>
+		<header class="mui-bar mui-bar-nav">
+			<h1 class="mui-title">首页</h1>
+		</header>
+		<div class="mui-content">
+			<ul class="mui-table-view">
+			<li class="mui-table-view-cell mui-media">
+				<a href="javascript:;">
+					<img class="mui-media-object mui-pull-left" src="images/shuijiao.jpg">
+					<div class="mui-media-body">
+						幸福
+						<p class='mui-ellipsis'>能和心爱的人一起睡觉，是件幸福的事情；可是，打呼噜怎么办？</p>
+					</div>
+				</a>
+			</li>
+			<li class="mui-table-view-cell mui-media">
+				<a href="javascript:;">
+					<img class="mui-media-object mui-pull-left" src="images/muwu.jpg">
+					<div class="mui-media-body">
+						木屋
+						<p class='mui-ellipsis'>想要这样一间小木屋，夏天挫冰吃瓜，冬天围炉取暖.</p>
+					</div>
+				</a>
+			</li>
+			<li class="mui-table-view-cell mui-media">
+				<a href="javascript:;">
+					<img class="mui-media-object mui-pull-left" src="images/cbd.jpg">
+					<div class="mui-media-body">
+						CBD
+						<p class='mui-ellipsis'>烤炉模式的城，到黄昏，如同打翻的调色盘一般.</p>
+					</div>
+				</a>
+			</li>
+			</ul>
+		</div>
+		<script src="js/util.js"></script>
+		<script type="text/javascript">
+			(function() {
+				mui.init({
+					swipeBack: true //启用右滑关闭功能
+				});
+				mui.plusReady(function() {
+					var self = plus.webview.currentWebview(),
+						leftPos = Math.ceil((window.innerWidth - 60) / 2); // 设置凸起大图标为水平居中
+
+					/**	
+					 * drawNativeIcon 绘制带边框的半圆，
+					 * 实现原理：
+					 *   id为bg的tag 创建带边框的圆
+					 *   id为bg2的tag 创建白色矩形遮住圆下半部分，只显示凸起带边框部分
+					 * 	 id为iconBg的红色背景图
+					 *   id为icon的字体图标
+					 *   注意创建先后顺序，创建越晚的层级越高
+					 */
+					var drawNativeIcon = util.drawNative('icon', {
+						bottom: '5px',
+						left: leftPos + 'px',
+						width: '60px',
+						height: '60px'
+					}, [{
+						tag: 'rect',
+						id: 'bg',
+						position: {
+							top: '1px',
+							left: '0px',
+							width: '100%',
+							height: '100%'
+						},
+						rectStyles: {
+							color: '#fff',
+							radius: '50%',
+							borderColor: '#ccc',
+							borderWidth: '1px'
+						}
+					}, {
+						tag: 'rect',
+						id: 'bg2',
+						position: {
+							bottom: '-0.5px',
+							left: '0px',
+							width: '100%',
+							height: '45px'
+						},
+						rectStyles: {
+							color: '#fff'
+						}
+					}, {
+						tag: 'rect',
+						id: 'iconBg',
+						position: {
+							top: '5px',
+							left: '5px',
+							width: '50px',
+							height: '50px'
+						},
+						rectStyles: {
+							color: '#d74b28',
+							radius: '50%'
+						}
+					}, {
+						tag: 'font',
+						id: 'icon',
+						text: '+',
+						position: {
+							top: '0px',
+							left: '5px',
+							width: '50px',
+							height: '100%'
+						},
+						textStyles: {
+							fontSrc: '_www/fonts/iconfont.ttf',
+							align: 'center',
+							color: '#fff',
+							size: '40px'
+						}
+					}]);
+					// append 到父webview中
+					self.append(drawNativeIcon);
+
+					//自定义监听图标点击事件
+					var active_color = '#fff';
+					drawNativeIcon.addEventListener('click', function(e) {
+						dophoto();
+						if(active_color == '#fff') {
+							drawNativeIcon.drawText('+', {}, {
+								fontSrc: '_www/fonts/iconfont.ttf',
+								align: 'center',
+								color: '#000',
+								size: '40px'
+							}, 'icon');
+							active_color = '#000';
+						} else {
+							drawNativeIcon.drawText('+', {}, {
+								fontSrc: '_www/fonts/iconfont.ttf',
+								align: 'center',
+								color: '#fff',
+								size: '40px'
+							}, 'icon');
+							active_color = '#fff';
+						}
+
+					});
+					// 中间凸起图标绘制及监听点击完毕
+
+					// 创建子webview窗口 并初始化
+					var aniShow = {};
+					util.initSubpage(aniShow);
+					
+					var 	nview = plus.nativeObj.View.getViewById('tabBar'),
+						activePage = plus.webview.currentWebview(),
+						targetPage,
+						subpages = util.options.subpages,
+						pageW = window.innerWidth,
+						currIndex = 0;
+					
+						
+					/**
+					 * 根据判断view控件点击位置判断切换的tab
+					 */
+					nview.addEventListener('click', function(e) {
+						var clientX = e.clientX;
+						if(clientX > 0 && clientX <= parseInt(pageW * 0.25)) {
+							currIndex = 0;
+						} else if(clientX > parseInt(pageW * 0.25) && clientX <= parseInt(pageW * 0.45)) {
+							currIndex = 1;
+						} else if(clientX > parseInt(pageW * 0.45) && clientX <= parseInt(pageW * 0.8)) {
+							currIndex = 2;
+						} else if(clientX > parseInt(pageW * 0.8) && clientX <= parseInt(pageW * 1)) {
+							currIndex = 3;
+						} else {
+							currIndex = 4;
+						}
+						// 匹配对应tab窗口	
+						if(currIndex > 0) {
+							targetPage = plus.webview.getWebviewById(subpages[currIndex - 1]);
+						} else {
+							targetPage = plus.webview.currentWebview();
+						}
+
+						if(targetPage == activePage) {
+							return;
+						}
+
+						if(currIndex !== 4) { 
+							//底部选项卡切换
+							util.toggleNview(currIndex);
+							// 子页面切换
+							util.changeSubpage(targetPage, activePage, aniShow);
+							//更新当前活跃的页面
+							activePage = targetPage;
+						} 
+					});
+				});
+			})();
+			
+			function dophoto(){
+				var cmr = plus.camera.getCamera();
+				cmr.captureImage(function(p) {
+					plus.io.resolveLocalFileSystemURL(p, function(entry) {
+						var imgPath = entry.toLocalURL();
+						compressImage(imgPath);//压缩base64上传图片
+					}, function(e) {
+						console.log("读取拍照文件错误: " + e.message)
+					})
+					}, function(e) {
+						console.log("失败: " + e.message)
+					}, {
+						filename: "_doc/camera/",
+						index: 1
+				})
+				};
+				
+			function compressImage(imgPath){
+					console.log("开始压缩");
+				plus.zip.compressImage({
+					src: imgPath,
+					dst: '_doc/zip/' + new Date().getTime() + '.jpg',
+					quality: 10,
+					format: "jpg",
+					overwrite: true
+				}, function(zip) {
+					getBase64Data(zip.target); //调用base64方法
+				}, function(error) {
+					alert(JSON.stringify(error));
+				})
+				};
+			
+			function getBase64Data(imgPath) {
+				var bitmap = new plus.nativeObj.Bitmap(imgPath);
+				bitmap.load(imgPath, function(data) {
+					var base64Url = bitmap.toBase64Data().substr(22);
+					console.log("base64成功");
+					// upload(base64Url,imgPath); //调用ajax方法
+					mui.openWindow({
+						url:'html/new-launch.html',
+						id:'new-launch',
+						styles:{
+						top:'0px',//新页面顶部位置
+						bottom:'0px',//新页面底部位置
+						width:'100%',//新页面宽度，默认为100%
+						height:'100%',//新页面高度，默认为100%
+						},
+						extras:{
+							base64Url:base64Url,
+							imgPath:imgPath,
+						//自定义扩展参数，可以用来处理页面间传值
+						},
+						createNew:false,//是否重复创建同样id的webview，默认为false:不重复创建，直接显示
+						show:{
+							autoShow:true,//页面loaded事件发生后自动显示，默认为true
+							aniShow:'slide-in-right',//页面显示动画，默认为”slide-in-right“；
+							duration:'100'//页面动画持续时间，Android平台默认100毫秒，iOS平台默认200毫秒；
+						},
+						waiting:{
+							autoShow:true,//自动显示等待框，默认为true
+							title:'正在加载...',//等待对话框上显示的提示内容
+							options:{
+							width:'auto',//等待框背景区域宽度，默认根据内容自动计算合适宽度
+							height:'auto',//等待框背景区域高度，默认根据内容自动计算合适高度							
+							}
+						}
+					})
+				}, function(e) {
+					console.log(e);
+				})
+			}
+		</script>
+		
+	</body>
+
+</html>

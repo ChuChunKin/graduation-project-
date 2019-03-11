@@ -1,0 +1,349 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<title>Hello MUI</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1,user-scalable=no">
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black">
+
+		<link rel="stylesheet" href="../css/mui.min.css">
+		<style>
+			html,
+			body {
+				background-color: #efeff4;
+			}
+			.mui-views,
+			.mui-view,
+			.mui-pages,
+			.mui-page,
+			.mui-page-content {
+				position: absolute;
+				left: 0;
+				right: 0;
+				top: 0;
+				bottom: 0;
+				width: 100%;
+				height: 100%;
+				background-color: #efeff4;
+			}
+			.mui-pages {
+				top: 46px;
+				height: auto;
+			}
+			.mui-scroll-wrapper,
+			.mui-scroll {
+				background-color: #efeff4;
+			}
+			.mui-page.mui-transitioning {
+				-webkit-transition: -webkit-transform 300ms ease;
+				transition: transform 300ms ease;
+			}
+			.mui-page-left {
+				-webkit-transform: translate3d(0, 0, 0);
+				transform: translate3d(0, 0, 0);
+			}
+			.mui-ios .mui-page-left {
+				-webkit-transform: translate3d(-20%, 0, 0);
+				transform: translate3d(-20%, 0, 0);
+			}
+			.mui-navbar {
+				position: fixed;
+				right: 0;
+				left: 0;
+				z-index: 10;
+				height: 44px;
+				background-color: #f7f7f8;
+			}
+			.mui-navbar .mui-bar {
+				position: absolute;
+				background: transparent;
+				text-align: center;
+			}
+			.mui-android .mui-navbar-inner.mui-navbar-left {
+				opacity: 0;
+			}
+			.mui-ios .mui-navbar-left .mui-left,
+			.mui-ios .mui-navbar-left .mui-center,
+			.mui-ios .mui-navbar-left .mui-right {
+				opacity: 0;
+			}
+			.mui-navbar .mui-btn-nav {
+				-webkit-transition: none;
+				transition: none;
+				-webkit-transition-duration: .0s;
+				transition-duration: .0s;
+			}
+			.mui-navbar .mui-bar .mui-title {
+				display: inline-block;
+				width: auto;
+			}
+			.mui-page-shadow {
+				position: absolute;
+				right: 100%;
+				top: 0;
+				width: 16px;
+				height: 100%;
+				z-index: -1;
+				content: '';
+			}
+			.mui-page-shadow {
+				background: -webkit-linear-gradient(left, rgba(0, 0, 0, 0) 0, rgba(0, 0, 0, 0) 10%, rgba(0, 0, 0, .01) 50%, rgba(0, 0, 0, .2) 100%);
+				background: linear-gradient(to right, rgba(0, 0, 0, 0) 0, rgba(0, 0, 0, 0) 10%, rgba(0, 0, 0, .01) 50%, rgba(0, 0, 0, .2) 100%);
+			}
+			.mui-navbar-inner.mui-transitioning,
+			.mui-navbar-inner .mui-transitioning {
+				-webkit-transition: opacity 300ms ease, -webkit-transform 300ms ease;
+				transition: opacity 300ms ease, transform 300ms ease;
+			}
+			.mui-page {
+				display: none;
+			}
+			.mui-pages .mui-page {
+				display: block;
+			}
+			.mui-page .mui-table-view:first-child {
+				margin-top: 15px;
+			}
+			.mui-page .mui-table-view:last-child {
+				margin-bottom: 30px;
+			}
+			.mui-table-view {
+				margin-top: 20px;
+			}
+			
+			.mui-table-view span.mui-pull-right {
+				color: #999;
+			}
+			.mui-table-view-divider {
+				background-color: #efeff4;
+				font-size: 14px;
+			}
+			.mui-table-view-divider:before,
+			.mui-table-view-divider:after {
+				height: 0;
+			}
+			.head {
+				height: 40px;
+			}
+			#head {
+				line-height: 40px;
+			}
+			.head-img {
+				width: 40px;
+				height: 40px;
+			}
+			#head-img1 {
+				position: absolute;
+				bottom: 10px;
+				right: 40px;
+				width: 40px;
+				height: 40px;
+			}
+			.update {
+				font-style: normal;
+				color: #999999;
+				margin-right: -25px;
+				font-size: 15px
+			}
+			.mui-fullscreen {
+				position: fixed;
+				z-index: 20;
+				background-color: #000;
+			}
+			.mui-ios .mui-navbar .mui-bar .mui-title {
+				position: static;
+			}
+			/*问题反馈在setting页面单独的css*/
+			#feedback .mui-popover{
+				position: fixed;
+			}
+			#feedback .mui-table-view:last-child {
+			    margin-bottom: 0px;
+			}
+			#feedback .mui-table-view:first-child {
+			    margin-top: 0px;
+			}
+			
+			.mui-plus.mui-plus-stream .mui-stream-hidden{
+				display: none !important;
+			}
+			
+			/*问题反馈在setting页面单独的css==end*/
+			
+		</style>
+		<link rel="stylesheet" type="text/css" href="../css/feedback.css" />
+	</head>
+
+	<body class="mui-fullscreen">
+		<!--页面主结构开始-->
+		<div id="app" class="mui-views">
+			<div class="mui-view">
+				<div class="mui-navbar">
+				</div>
+				<div class="mui-pages">
+				</div>
+			</div>
+		</div>
+		<!--页面主结构结束-->
+		<!--单页面开始-->
+		<div id="setting" class="mui-page">
+			<!--页面标题栏开始-->
+			<div class="mui-navbar-inner mui-bar mui-bar-nav">
+				<h1 class="mui-center mui-title">我的</h1>
+			</div>
+			<!--页面标题栏结束-->
+			<!--页面主内容区开始-->
+			<div class="mui-page-content">
+				<div class="mui-scroll-wrapper">
+					<div class="mui-scroll">
+						<ul class="mui-table-view mui-table-view-chevron">
+							<li class="mui-table-view-cell"> 
+							<a href="tab-webview-subpage-mine-selling.html" class="mui-navigate-right">出售中</a>
+							</li>
+							<li class="mui-table-view-cell"> 
+							<a href="tab-webview-subpage-mine-sold.html" class="mui-navigate-right">已售出</a>
+							</li>
+							<li class="mui-table-view-cell"> 
+							<a href="tab-webview-subpage-mine-bought.html" class="mui-navigate-right">已购买</a>
+							</li>
+						</ul>
+						<ul class="mui-table-view mui-table-view-chevron">
+							<li class="mui-table-view-cell">
+								<a href="tab-webview-subpage-mine-setting.html" class="mui-navigate-right">设置</a>
+							</li>
+						</ul>
+					</div>
+				</div>
+			</div>
+			<!--页面主内容区结束-->
+		</div>
+		<!--单页面结束-->	
+	</body>
+	<script src="../js/mui.min.js "></script>
+	<script src="../js/mui.view.js "></script>
+	<script>
+		mui.init();
+		//初始化单页view
+		var viewApi = mui('#app').view({
+			defaultPage: '#setting'
+		});
+		//初始化单页的区域滚动
+		mui('.mui-scroll-wrapper').scroll();
+		
+		mui('#app').on('tap', 'a', function() {
+			var href = this.getAttribute('href');
+			
+			//非plus环境，直接走href跳转
+			if(!mui.os.plus) {
+				location.href = href;
+				return;
+			}
+			
+			var id = this.getAttribute("data-wid");
+			if(!id) {
+				id = href;
+			}
+		
+			if(href && ~href.indexOf('.html')) {
+				//打开窗口的相关参数
+				var options = {
+					styles:{
+						popGesture: "close"
+					},
+					extras:{}
+				};
+				//如下场景不适用下拉回弹：
+				//1、单webview下拉刷新；2、底部有fixed定位的div的页面
+				if(!~id.indexOf('pullrefresh.html') && !~href.indexOf("examples/tabbar.html") && !~href.indexOf("list-to-detail/listview.html")) {
+					options.styles.bounce = "vertical";
+				}
+				//图标页面需要启动硬件加速
+				if(~id.indexOf('icons.html') || ~id.indexOf("echarts.html")) {
+					options.styles.hardwareAccelerated = true;
+				}
+				if(~id.indexOf('im-chat.html')) {
+					options.extras.acceleration = "none";
+				}
+				
+				var titleType = this.getAttribute("data-title-type");
+				if(titleType && titleType.indexOf("native") > -1) {//原生导航
+					options.styles.titleNView = {
+						autoBackButton:true,
+						backgroundColor:'#f7f7f7',
+						titleText:this.innerHTML.trim(),
+						splitLine: {
+							color: '#cccccc'
+						}
+					};
+					
+					options.show = {
+						event:'loaded'
+					}
+					//有原生标题的情况下，就不需要waiting框了
+					options.waiting = {
+						autoShow:false
+					}
+					
+					//透明渐变导航,增加类型设置
+					if(titleType == "transparent_native") {
+						options.styles.titleNView.type = "transparent";
+					}
+					
+					//处理原生图片轮播
+					if(~id.indexOf("slider-native.html")) {
+						options.styles.subNViews = [{ //配置图片轮播
+							id: 'slider-native',
+							type: 'ImageSlider',
+							styles: {
+								left: 0,
+								right: 0,
+								top: 0,
+								height: '200px',
+								position: 'static',
+								loop: true,
+								images: [{
+									src: '_www/images/yuantiao.jpg',
+									width: '100%'
+								}, {
+									src: '_www/images/shuijiao.jpg',
+									width: '100%',
+								}, {
+									src: '_www/images/muwu.jpg',
+									width: '100%',
+								}, {
+									src: '_www/images/cbd.jpg',
+									width: '100%',
+								}]
+							}
+						}];
+					}
+				}else{
+					//非原生导航，需要设置顶部状态栏占位
+					options.styles.statusbar = {
+						background: "#f7f7f7"
+					}
+				}
+				
+				//侧滑菜单需动态控制一下zindex值；
+				if(~id.indexOf('offcanvas-')) {
+					options.styles.zindex = 9998;
+					options.styles.popGesture = ~id.indexOf('offcanvas-with-right') ? "close" : "none";
+				}
+				
+				if(id && id == "viewgroup") { //强制启用截屏
+					options.extras.acceleration = "capture";
+				}
+				//打开新窗口
+				mui.openWindow(href,id,options);
+			}
+		});
+		
+		if(mui.os.stream){
+			document.getElementById("check_update").display = "none";
+		}
+		
+	</script>
+
+</html>

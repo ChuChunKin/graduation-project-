@@ -1,0 +1,104 @@
+<!doctype html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<title>发布页</title>
+		<script src="../js/mui.min.js"></script>
+		<link href="../css/mui.min.css" rel="stylesheet" />
+		<style>
+			html,
+			body {
+				background-color: #efeff4;
+			}
+			
+			.title {
+				margin: 20px 15px 10px;
+				color: #6d6d72;
+				font-size: 15px;
+				padding-bottom: 51px;
+			}
+		</style>
+	</head>
+
+	<body class="mui-fullscreen">
+		<header class="mui-bar mui-bar-nav">
+			<button type="button" class="mui-left mui-action-back mui-btn  mui-btn-link mui-btn-nav mui-pull-left">
+					<span class="mui-icon mui-icon-left-nav"></span>
+				</button>
+			<h1 class="mui-title">发布页</h1>
+		</header>
+		<div class="mui-content">
+			<div>
+				<label>书名</label>
+				<input name="bookname" id="bookname" type="text">
+			</div>
+
+			<div>
+				<label>描述</label>
+				<textarea name="description" id="description" type="text"></textarea>
+			</div>
+
+			<div>
+				<label>价格</label>
+				<input name="price" id="price" type="text">
+			</div>
+			<!-- <div>
+				<img src="../images/60x60.gif" />
+			</div> -->
+			<button type="button" id="btn" onclick="launchpost()">发送</button>
+			<div>
+				<label>返回值</label>
+				<input name="reback" id="reback" type="text">
+			</div>
+		</div>
+
+	
+		<script src="js/mui.js"></script>
+		<script type="text/javascript">
+			mui.init();
+
+			function launchpost() {
+				var self = plus.webview.currentWebview();
+				var input_bookname = document.getElementById("bookname").value;
+				var input_description = document.getElementById("description").value;
+				var input_price= document.getElementById("price").value;
+				var input_base64Url = self.base64Url;
+				//var input_photo = document.getElementById("photo").value;
+				//document.getElementById("result").value ="ajax请求发送中……";
+				mui.ajax('http://182.254.192.92:8001/launchpost/', {
+					async: true,
+					crossDomain: true,
+					data: {
+						bookname: input_bookname,
+						description: input_description,
+						price: input_price,
+						base64Url: input_base64Url,
+					},
+					dataType: 'json', //服务器返回json格式数据
+					type: 'post', //HTTP请求类型
+					timeout: 10000, //超时时间设置为10秒；
+					headers: {
+						'Content-Type': 'application/x-www-form-urlencoded'
+					},
+					success: function(data) {
+						//服务器返回响应，根据响应结果，分析是否登录成功；
+						mui.toast("上传成功");
+
+						document.getElementById("reback").value = JSON.stringify(data);
+					},
+					error: function(xhr, type, errorThrown) {
+						//异常处理；
+						mui.toast("上传失败");
+						//console.log(xhr);
+						console.log(type);
+						//console.log(errorThrown);
+					}
+				});
+			};
+			
+			
+		</script>
+	</body>
+</html>
